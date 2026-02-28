@@ -5,6 +5,7 @@ import com.example.taskmanagement.dto.TaskerResponseDTO;
 import com.example.taskmanagement.service.TaskerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class TaskerController {
 
     @PostMapping("/add")
     @Operation(summary = "Create tasker assignment")
-    public ResponseEntity<TaskerResponseDTO> add(@RequestBody TaskerRequestDTO requestDTO) {
+    public ResponseEntity<TaskerResponseDTO> add(@Valid @RequestBody TaskerRequestDTO requestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskerService.create(requestDTO));
     }
 
@@ -49,7 +50,7 @@ public class TaskerController {
 
     @PutMapping("/update/{id}")
     @Operation(summary = "Update tasker assignment")
-    public ResponseEntity<TaskerResponseDTO> update(@PathVariable Integer id, @RequestBody TaskerRequestDTO requestDTO) {
+    public ResponseEntity<TaskerResponseDTO> update(@PathVariable Integer id,@Valid @RequestBody TaskerRequestDTO requestDTO) {
         return ResponseEntity.ok(taskerService.update(id, requestDTO));
     }
 

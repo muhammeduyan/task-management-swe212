@@ -5,8 +5,8 @@ import java.time.LocalTime;
 
 public record TaskerResponseDTO(
         Integer id,
-        Integer employeeId,
-        Integer taskId,
+        EmployeeResponseDTO employee,
+        TaskResponseDTO task,
         LocalDate taskDate,
         LocalTime taskTime
 ) {

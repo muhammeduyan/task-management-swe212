@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setName(requestDTO.name());
         employee.setDepartment(requestDTO.department());
         Employee savedEmployee = employeeRepository.save(employee);
-        System.out.println("Employee created. id=" + savedEmployee.getId() + ", name=" + savedEmployee.getName());
+        System.out.println("Employee created. id=" + savedEmployee.getId() + ", name=" + savedEmployee.getName() + ", department=" + savedEmployee.getDepartment());
         return mapToResponseDTO(savedEmployee);
     }
 
@@ -55,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setName(requestDTO.name());
         employee.setDepartment(requestDTO.department());
         Employee updatedEmployee = employeeRepository.save(employee);
-        System.out.println("Employee updated. id=" + updatedEmployee.getId() + ", name=" + updatedEmployee.getName());
+        System.out.println("Employee updated. id=" + updatedEmployee.getId() + ", name=" + updatedEmployee.getName() + ", department=" + updatedEmployee.getDepartment());
         return mapToResponseDTO(updatedEmployee);
     }
 
@@ -64,8 +64,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(Integer id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
+        String name = employee.getName();
+        String department = employee.getDepartment();
         employeeRepository.delete(employee);
-        System.out.println("Employee deleted. id=" + id);
+        System.out.println("Employee deleted. id=" + id + ", name=" + name + ", department=" + department);
     }
 
     private EmployeeResponseDTO mapToResponseDTO(Employee employee) {

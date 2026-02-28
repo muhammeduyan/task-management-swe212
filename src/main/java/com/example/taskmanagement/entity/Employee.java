@@ -1,11 +1,16 @@
 package com.example.taskmanagement.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -20,6 +25,9 @@ public class Employee {
 
     @Column(length = 16)
     private String department;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tasker> taskers = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -43,5 +51,13 @@ public class Employee {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<Tasker> getTaskers() {
+        return taskers;
+    }
+
+    public void setTaskers(List<Tasker> taskers) {
+        this.taskers = taskers;
     }
 }

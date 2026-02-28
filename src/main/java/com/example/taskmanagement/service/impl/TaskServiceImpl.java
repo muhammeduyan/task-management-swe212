@@ -28,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
         task.setName(requestDTO.name());
         task.setDescription(requestDTO.description());
         Task savedTask = taskRepository.save(task);
-        System.out.println("Task created. id=" + savedTask.getId() + ", name=" + savedTask.getName());
+        System.out.println("Task created. id=" + savedTask.getId() + ", name=" + savedTask.getName() + ", description=" + savedTask.getDescription());
         return mapToResponseDTO(savedTask);
     }
 
@@ -55,7 +55,7 @@ public class TaskServiceImpl implements TaskService {
         task.setName(requestDTO.name());
         task.setDescription(requestDTO.description());
         Task updatedTask = taskRepository.save(task);
-        System.out.println("Task updated. id=" + updatedTask.getId() + ", name=" + updatedTask.getName());
+        System.out.println("Task updated. id=" + updatedTask.getId() + ", name=" + updatedTask.getName() + ", description=" + updatedTask.getDescription());
         return mapToResponseDTO(updatedTask);
     }
 
@@ -64,8 +64,10 @@ public class TaskServiceImpl implements TaskService {
     public void delete(Integer id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+        String name = task.getName();
+        String description = task.getDescription();
         taskRepository.delete(task);
-        System.out.println("Task deleted. id=" + id);
+        System.out.println("Task deleted. id=" + id + ", name=" + name + ", description=" + description);
     }
 
     private TaskResponseDTO mapToResponseDTO(Task task) {
