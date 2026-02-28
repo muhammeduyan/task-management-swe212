@@ -15,6 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("NullableProblems")
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleNoResourceFound(HttpServletRequest request) {
         LOGGER.warn("Page not found. path={}", request.getRequestURI());
         return buildResponse(HttpStatus.NOT_FOUND, "Such a page or resource does not exist.", request.getRequestURI());
     }
@@ -80,6 +81,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message, path));
     }
 
-    private record ErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
+    public record ErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
     }
 }

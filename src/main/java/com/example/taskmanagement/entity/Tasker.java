@@ -8,12 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "Taskers")
+@Getter
+@Setter
 public class Tasker {
 
     @Id
@@ -33,44 +37,4 @@ public class Tasker {
 
     @Column(name = "task_time")
     private LocalTime taskTime;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public LocalDate getTaskDate() {
-        return taskDate;
-    }
-
-    public void setTaskDate(LocalDate taskDate) {
-        this.taskDate = taskDate;
-    }
-
-    public LocalTime getTaskTime() {
-        return taskTime;
-    }
-
-    public void setTaskTime(LocalTime taskTime) {
-        this.taskTime = taskTime;
-    }
 }

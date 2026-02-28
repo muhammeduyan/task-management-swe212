@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@SuppressWarnings("NullableProblems")
 @RestController
 @RequestMapping("/api/taskers")
 @Tag(name = "Tasker", description = "Tasker CRUD endpoints")
