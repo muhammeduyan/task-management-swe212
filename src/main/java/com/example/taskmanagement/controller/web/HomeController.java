@@ -4,6 +4,7 @@ import com.example.taskmanagement.dto.UserProfileDTO;
 import com.example.taskmanagement.dto.UserRegistrationDTO;
 import com.example.taskmanagement.service.AppUserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,9 @@ import java.util.UUID;
 public class HomeController {
 
     private final AppUserService userService;
-    private static final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+
+    @Value("${app.upload.dir:uploads}")
+    private String uploadDir;
 
     public HomeController(AppUserService userService) {
         this.userService = userService;
@@ -83,11 +86,25 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("errorMessage", "Please select a file to upload.");
             return "redirect:/profile";
         }
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Invalid file name.");
+            return "redirect:/profile";
+        }
+        // Sanitize filename: keep only the last path component and replace unsafe characters
+        String sanitized = Paths.get(originalFilename).getFileName().toString()
+                .replaceAll("[^a-zA-Z0-9._-]", "_");
         try {
-            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path uploadPath = Paths.get(UPLOAD_DIR);
+            String filename = UUID.randomUUID() + "_" + sanitized;
+            Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
             Files.createDirectories(uploadPath);
-            Files.copy(file.getInputStream(), uploadPath.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+            Path target = uploadPath.resolve(filename).normalize();
+            // Ensure the resolved path is still within the upload directory
+            if (!target.startsWith(uploadPath)) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Invalid file path.");
+                return "redirect:/profile";
+            }
+            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
             userService.updateProfileImage(auth.getName(), "/uploads/" + filename);
             System.out.println("[HomeController] User '" + auth.getName() + "' uploaded profile image: " + filename);
             redirectAttributes.addFlashAttribute("successMessage", "Profile image updated successfully.");

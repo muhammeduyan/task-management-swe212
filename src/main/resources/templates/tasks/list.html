@@ -33,7 +33,7 @@
                     <td>
                         <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-sm btn-warning">Edit</a>
                         <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" style="display:inline"
-                              onsubmit="return confirm('Delete this task?')">
+                              class="delete-form">
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>
@@ -46,5 +46,12 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.delete-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('Delete this task?')) { e.preventDefault(); }
+        });
+    });
+</script>
 </body>
 </html>

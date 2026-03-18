@@ -18,9 +18,10 @@
                 <div class="card-body text-center">
                     <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
                     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
-                    <img th:if="${user.profileImage != null}" th:src="${user.profileImage}"
+                    <img th:if="${user.profileImage != null and user.profileImage.startsWith('/uploads/')}"
+                         th:src="${user.profileImage}"
                          class="rounded-circle mb-3" width="120" height="120" alt="Profile Image" style="object-fit:cover;">
-                    <img th:unless="${user.profileImage != null}"
+                    <img th:unless="${user.profileImage != null and user.profileImage.startsWith('/uploads/')}"
                          src="https://via.placeholder.com/120"
                          class="rounded-circle mb-3" width="120" height="120" alt="Default Profile">
                     <h4 th:text="${user.username}">Username</h4>

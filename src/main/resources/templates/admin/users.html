@@ -30,7 +30,8 @@
                         <span th:each="role : ${u.roles}" class="badge bg-primary me-1" th:text="${role}"></span>
                     </td>
                     <td>
-                        <img th:if="${u.profileImage != null}" th:src="${u.profileImage}"
+                        <img th:if="${u.profileImage != null and u.profileImage.startsWith('/uploads/')}"
+                             th:src="${u.profileImage}"
                              width="40" height="40" class="rounded-circle" style="object-fit:cover;" alt="Profile">
                         <span th:unless="${u.profileImage != null}" class="text-muted">No image</span>
                     </td>
