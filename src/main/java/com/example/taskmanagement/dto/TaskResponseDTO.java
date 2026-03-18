@@ -1,8 +1,10 @@
 package com.example.taskmanagement.dto;
 
-public record TaskResponseDTO(
-        Integer id,
-        String name,
-        String description
-) {
+import lombok.*;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class TaskResponseDTO {
+    private Integer id;
+    private String name;
+    private String description;
 }
