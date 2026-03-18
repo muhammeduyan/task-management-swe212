@@ -25,8 +25,8 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskResponseDTO create(TaskRequestDTO requestDTO) {
         Task task = new Task();
-        task.setName(requestDTO.name());
-        task.setDescription(requestDTO.description());
+        task.setName(requestDTO.getName());
+        task.setDescription(requestDTO.getDescription());
         Task savedTask = taskRepository.save(task);
         System.out.println("Task created. id=" + savedTask.getId() + ", name=" + savedTask.getName() + ", description=" + savedTask.getDescription());
         return mapToResponseDTO(savedTask);
@@ -52,8 +52,8 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDTO update(Integer id, TaskRequestDTO requestDTO) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-        task.setName(requestDTO.name());
-        task.setDescription(requestDTO.description());
+        task.setName(requestDTO.getName());
+        task.setDescription(requestDTO.getDescription());
         Task updatedTask = taskRepository.save(task);
         System.out.println("Task updated. id=" + updatedTask.getId() + ", name=" + updatedTask.getName() + ", description=" + updatedTask.getDescription());
         return mapToResponseDTO(updatedTask);

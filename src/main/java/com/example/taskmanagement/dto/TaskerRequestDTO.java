@@ -1,18 +1,18 @@
 package com.example.taskmanagement.dto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import jakarta.validation.constraints.NotNull;
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class TaskerRequestDTO {
+    @NotNull(message = "Employee ID cannot be null")
+    private Integer employeeId;
 
-public record TaskerRequestDTO(
-        @NotNull(message = "Employee ID cannot be null")
-        Integer employeeId,
+    private Integer taskId;
 
-        Integer taskId,
+    private LocalDate taskDate;
 
-        LocalDate taskDate,
-
-        LocalTime taskTime
-) {
+    private LocalTime taskTime;
 }
