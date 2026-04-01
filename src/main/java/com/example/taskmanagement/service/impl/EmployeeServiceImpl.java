@@ -25,8 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeResponseDTO create(EmployeeRequestDTO requestDTO) {
         Employee employee = new Employee();
-        employee.setName(requestDTO.name());
-        employee.setDepartment(requestDTO.department());
+        employee.setName(requestDTO.getName());
+        employee.setDepartment(requestDTO.getDepartment());
         Employee savedEmployee = employeeRepository.save(employee);
         System.out.println("Employee created. id=" + savedEmployee.getId() + ", name=" + savedEmployee.getName() + ", department=" + savedEmployee.getDepartment());
         return mapToResponseDTO(savedEmployee);
@@ -52,8 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponseDTO update(Integer id, EmployeeRequestDTO requestDTO) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
-        employee.setName(requestDTO.name());
-        employee.setDepartment(requestDTO.department());
+        employee.setName(requestDTO.getName());
+        employee.setDepartment(requestDTO.getDepartment());
         Employee updatedEmployee = employeeRepository.save(employee);
         System.out.println("Employee updated. id=" + updatedEmployee.getId() + ", name=" + updatedEmployee.getName() + ", department=" + updatedEmployee.getDepartment());
         return mapToResponseDTO(updatedEmployee);

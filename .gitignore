@@ -4,6 +4,12 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignore uploads directory (user uploaded content)
+uploads/
+
+### Gradle ###
+.gradle/
+
 ### STS ###
 .apt_generated
 .classpath

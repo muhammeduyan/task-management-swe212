@@ -38,19 +38,19 @@ public class TaskerServiceImpl implements TaskerService {
     @Override
     @Transactional
     public TaskerResponseDTO create(TaskerRequestDTO requestDTO) {
-        Employee employee = employeeRepository.findById(requestDTO.employeeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + requestDTO.employeeId()));
-        Task task = taskRepository.findById(requestDTO.taskId())
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + requestDTO.taskId()));
+        Employee employee = employeeRepository.findById(requestDTO.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + requestDTO.getEmployeeId()));
+        Task task = taskRepository.findById(requestDTO.getTaskId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + requestDTO.getTaskId()));
 
         Tasker tasker = new Tasker();
         tasker.setEmployee(employee);
         tasker.setTask(task);
-        tasker.setTaskDate(requestDTO.taskDate());
-        tasker.setTaskTime(requestDTO.taskTime());
+        tasker.setTaskDate(requestDTO.getTaskDate());
+        tasker.setTaskTime(requestDTO.getTaskTime());
 
         if (taskerRepository.existsByEmployeeIdAndTaskDateAndTaskTime(
-                requestDTO.employeeId(), requestDTO.taskDate(), requestDTO.taskTime())) {
+                requestDTO.getEmployeeId(), requestDTO.getTaskDate(), requestDTO.getTaskTime())) {
             throw new BadRequestException("Employee already has a task assigned at this specific date and time.");
         }
 
@@ -81,24 +81,24 @@ public class TaskerServiceImpl implements TaskerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Tasker not found with id: " + id));
 
         Employee employee = tasker.getEmployee();
-        if (!tasker.getEmployee().getId().equals(requestDTO.employeeId())) {
-            employee = employeeRepository.findById(requestDTO.employeeId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + requestDTO.employeeId()));
+        if (!tasker.getEmployee().getId().equals(requestDTO.getEmployeeId())) {
+            employee = employeeRepository.findById(requestDTO.getEmployeeId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + requestDTO.getEmployeeId()));
             tasker.setEmployee(employee);
         }
 
         Task task = tasker.getTask();
-        if (!tasker.getTask().getId().equals(requestDTO.taskId())) {
-            task = taskRepository.findById(requestDTO.taskId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + requestDTO.taskId()));
+        if (!tasker.getTask().getId().equals(requestDTO.getTaskId())) {
+            task = taskRepository.findById(requestDTO.getTaskId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + requestDTO.getTaskId()));
             tasker.setTask(task);
         }
 
-        tasker.setTaskDate(requestDTO.taskDate());
-        tasker.setTaskTime(requestDTO.taskTime());
+        tasker.setTaskDate(requestDTO.getTaskDate());
+        tasker.setTaskTime(requestDTO.getTaskTime());
 
         if (taskerRepository.existsByEmployeeIdAndTaskDateAndTaskTimeAndIdNot(
-                requestDTO.employeeId(), requestDTO.taskDate(), requestDTO.taskTime(), id)) {
+                requestDTO.getEmployeeId(), requestDTO.getTaskDate(), requestDTO.getTaskTime(), id)) {
             throw new BadRequestException("Employee already has a task assigned at this specific date and time.");
         }
 

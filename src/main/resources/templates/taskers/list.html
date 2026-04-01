@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments - Task Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Task Assignments</h2>
+        <a th:href="@{/taskers/new}" class="btn btn-warning">+ New Assignment</a>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Employee</th>
+                    <th>Task</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="tasker : ${taskers}">
+                    <td th:text="${tasker.id}"></td>
+                    <td th:text="${tasker.employee?.name}"></td>
+                    <td th:text="${tasker.task?.name}"></td>
+                    <td th:text="${tasker.taskDate}"></td>
+                    <td th:text="${tasker.taskTime}"></td>
+                    <td>
+                        <a th:href="@{/taskers/edit/{id}(id=${tasker.id})}" class="btn btn-sm btn-warning">Edit</a>
+                        <form th:action="@{/taskers/delete/{id}(id=${tasker.id})}" method="post" style="display:inline"
+                              class="delete-form">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(taskers)}">
+                    <td colspan="6" class="text-center text-muted">No assignments found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.delete-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('Delete this assignment?')) { e.preventDefault(); }
+        });
+    });
+</script>
+</body>
+</html>
